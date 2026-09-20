@@ -1,0 +1,5 @@
+<Bindings>
+    <Binding name="CODEXPIXELBRIDGE_TOGGLE" header="CODEXPIXELBRIDGE" category="ADDONS">
+        CodexPixelBridgeToggle()
+    </Binding>
+</Bindings>

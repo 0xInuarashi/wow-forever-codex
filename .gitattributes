@@ -1,0 +1,9 @@
+* text=auto eol=lf
+*.py text eol=lf
+*.pyw text eol=lf
+*.lua text eol=lf
+*.xml text eol=lf
+*.toc text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.txt text eol=lf

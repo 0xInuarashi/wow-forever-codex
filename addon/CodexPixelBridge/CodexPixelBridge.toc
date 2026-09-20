@@ -1,0 +1,19 @@
+## Interface: 16001
+## Title: Codex Pixel Bridge
+## Notes: Optical prompts and checked native-text replies through font metrics.
+## Version: 0.4.7
+## SavedVariables: CodexPixelBridgeState
+## DefaultState: enabled
+Protocol.lua
+NativeProtocol.lua
+Main.lua
+ItemLinks.lua
+Probe.lua
+
+Native.lua
+ReplyLinks.lua
+FontProbe.lua
+LateFontProbeConfig.lua
+LateFontProbe.lua
+FontMatrixConfig.lua
+FontMatrixProbe.lua

@@ -1,0 +1,26 @@
+.venv/
+__pycache__/
+state/
+*.sqlite3*
+*.py[cod]
+.env
+.env.*
+!.env.example
+*.log
+*.zip
+work/
+dist/
+build/
+.pytest_cache/
+
+# Generated addon resources may contain live response bytes. Recreate on install.
+/addon/CodexPixelBridge/*.ttf
+/addon/CodexPixelBridge/*.tga
+/addon/CodexPixelBridge/.fontseed-*
+
+# Retain private investigation notes/screenshots locally. Publish curated docs only.
+/docs/*
+!/docs/architecture.md
+!/docs/development.md
+!/docs/testing.md
+!/docs/font-bank.md

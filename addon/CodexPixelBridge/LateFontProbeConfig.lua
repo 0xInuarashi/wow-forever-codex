@@ -1,0 +1,3 @@
+-- Prepare a fresh test with tools.font_discovery before opening the probe.
+local _,NS=...
+NS.FontDiscoveryToken=nil
