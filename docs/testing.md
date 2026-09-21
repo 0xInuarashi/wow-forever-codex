@@ -2,7 +2,7 @@
 
 The local Windows suite contains **86 tests**, using Python 3.12, Pillow/FreeType,
 fontTools and Lupa's Lua 5.1 runtime. The initial GitHub Windows CI run also passed all 86 tests on commit `5eda9a7`.
-[Hosted result](https://github.com/riverbirch9264/forever-bridge/actions/runs/35528904070).
+[Hosted result](https://github.com/0xInuarashi/wow-forever-codex/actions/runs/35528904070).
 Local/hosted tests remain distinct from the live-client observations below.
 
 Coverage includes:

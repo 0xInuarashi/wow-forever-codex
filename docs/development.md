@@ -1,5 +1,9 @@
 # Development
 
+Agents installing or updating the addon and companion should begin with the
+repository-root [AGENTS.md](../AGENTS.md). It includes the complete setup and
+verification workflow and explains how to preserve an existing installation.
+
 `addon/CodexPixelBridge/` contains the native Lua UI, optical protocol, font
 receiver, item-link behavior and opt-in diagnostics. `companion/` contains screen
 decoding, the durable inbox, the agent adapter and native font writer. `tools/`

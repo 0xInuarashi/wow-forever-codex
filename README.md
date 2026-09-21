@@ -170,6 +170,8 @@ The earlier image-response implementation remains in the repository for diagnost
 
 ## Install
 
+**Installing with an agent?** Start with [AGENTS.md](AGENTS.md) for path discovery, safe upgrades, persistent companion configuration and end-to-end verification.
+
 From this repository's folder:
 
 ```powershell
@@ -216,7 +218,7 @@ The preview limit is 60,000 UTF-8 bytes. The companion retains the full response
 
 The native channel has delivered real responses and completion notifications in the tested client. Shared placeholders delivered fresh bytes in two live experiments. Full-bank startup performance and live use of slot 65,535 remain unverified. Native item-link mouse behavior and the split-stack fix still need broader live verification.
 
-**86 local tests pass**, including production Lua 5.1, real font measurements, consecutive multipart replies, the last slot and a clean-source installer. The initial GitHub Windows run also passed all 86 tests; [view that run](https://github.com/riverbirch9264/forever-bridge/actions/runs/35528904070). [Testing](docs/testing.md).
+**86 local tests pass**, including production Lua 5.1, real font measurements, consecutive multipart replies, the last slot and a clean-source installer. The initial GitHub Windows run also passed all 86 tests; [view that run](https://github.com/0xInuarashi/wow-forever-codex/actions/runs/35528904070). [Testing](docs/testing.md).
 
 ## Local data
 
