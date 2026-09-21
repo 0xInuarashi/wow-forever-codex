@@ -33,7 +33,11 @@ Font filenames must exist before the game discovers addon resources. Before the
 first load of an unused slot, the companion creates a valid TrueType font whose
 private-use glyph advance widths encode a 512-byte response packet. Publication
 uses an atomic file replacement. Loaded paths are treated as consumed because
-the tested client continued returning cached data after files were rewritten.
+the tested client continued returning cached data after files were rewritten
+within the same process. Diagnostic paths became reusable after a full client
+restart, including a write after startup but before first load. The current
+transport still preserves its saved slot position; automatic reset is not
+implemented. [Restart experiment and limits](font-recycling.md).
 
 The addon calls ordinary SetFont, SetText and GetStringWidth APIs. Two calibration
 glyphs define byte values zero and 255; a common trailing glyph stabilizes width

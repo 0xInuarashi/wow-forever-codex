@@ -255,7 +255,11 @@ or sandbox preferences during installation.
 Normal source archives omit generated resources and local evidence. Do not
 interpret their absence as missing source files. Opt-in probes need their own
 explicit preparation and manual activation; do not arm them during ordinary
-installation or claim they prove unsupported runtime cache recycling.
+installation or treat full-restart reuse as proof of recycling within a running
+client. [The restart experiment](docs/font-recycling.md) verified two diagnostic
+filenames across a full client restart, including publication after startup.
+Automatic bank/counter reset is not implemented; normal restarts preserve the
+saved position. Do not reset a user's bank based only on that probe result.
 
 ## Development and verification
 

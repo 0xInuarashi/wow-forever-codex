@@ -61,5 +61,11 @@ Relevant declarations include SimpleFontString, SimpleFont, Font, UIFileAsset
 and the shared UI XML schema. This exported source is a public mirror of the
 client UI, not a description of internal native cache behavior.
 
+The [full-restart font experiment](font-recycling.md) records direct live
+evidence that previously loaded diagnostic paths can deliver new data in a new
+client process. It includes a same-session cache control and publication after
+startup. Keep that result distinct from automatic counter reset or full-bank
+recycling, which are not implemented or validated by the experiment.
+
 Keep live observations separate from modeled test results. New UI code requires
 a manual reload; no tooling should synthesize game input to perform it.

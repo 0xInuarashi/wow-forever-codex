@@ -133,13 +133,15 @@ If no writer reaches a slot before its first load, the addon reads a recognizabl
 
 ### 6. Why there are 65,535 files
 
-The successful live behavior depends on **first use of an existing filename**. In the tested client, rewriting a font path after it had been loaded continued to return cached data. Genuinely new filenames created after UI load were not discovered by the tested routes. Precreating many names lets the bridge move forward through unused resources without a per-message reload.
+The successful live behavior depends on **first use of an existing filename in the current game process**. In the tested client, rewriting a font path after it had been loaded continued to return cached data. New filenames created after UI load were not discovered by the tested routes. Precreating many names lets the bridge move forward through unused resources without a per-message reload.
 
 The bank runs from `fontreply0001.ttf` through `fontreply65535.ttf`. The filename format uses a minimum of four digits, so five-digit slots work naturally. The transport carries slot numbers in 32-bit fields; 65,535 is the chosen bank capacity, not the wire format's maximum. Slot 65,536 is an inactive exhaustion marker and is never written as a font file.
 
 Initially, groups of up to 512 filenames share one valid blank font through NTFS hard links. A fresh bank needs only 128 underlying baseline files: about **2.81 MB of font payload**, plus filesystem metadata. Atomic replacement detaches the selected filename when a reply is published, leaving the other blank slots untouched. Storage grows as more slots receive independent packets. Writing through a shared file in place would corrupt its siblings, which is why replacement matters.
 
 The addon saves its next-slot counter before requesting a font. Beta settings restoration has sometimes lost that counter; the receiver can read past checked stale packets to reach a fresh slot. It never treats that recovery as cache eviction or resets the bank. Automatic recycling is not implemented, and exhaustion leaves the full responses available in the companion.
+
+**Full-restart reuse was verified on September 21, 2026:** two previously loaded diagnostic font filenames delivered new bytes after the client process restarted, including a value written after startup but before its first read. This supports a future recycler; restarting today still preserves the saved counter. The live checks used 64-byte diagnostic packets, not a reset of the full production bank. [Experiment, results and limits](docs/font-recycling.md).
 
 A one-time reload is needed for changed addon code and resource discovery after installation; a client restart may be needed if new names remain unknown. Ordinary exchanges then use the already prepared bank. Documented font APIs provide the measurement operations, while this first-use file-loading behavior is an empirical result from the tested build, not a guaranteed general-purpose file/IPC API.
 
@@ -216,7 +218,7 @@ The font bank is finite and does not automatically recycle. Each font carries a 
 
 The preview limit is 60,000 UTF-8 bytes. The companion retains the full response. Each receive watch stops after 20 minutes, three consecutive real loading/corruption failures, or a completed response. Lost saved counters can require reading past cached old slots. Keep the strip visible while receiving.
 
-The native channel has delivered real responses and completion notifications in the tested client. Shared placeholders delivered fresh bytes in two live experiments. Full-bank startup performance and live use of slot 65,535 remain unverified. Native item-link mouse behavior and the split-stack fix still need broader live verification.
+The native channel has delivered real responses and completion notifications in the tested client. Shared placeholders delivered fresh bytes in two live experiments, and diagnostic font filenames were successfully reused after a full client restart. Full-bank recycling, startup performance and live use of slot 65,535 remain unverified. Native item-link mouse behavior and the split-stack fix still need broader live verification.
 
 **86 local tests pass**, including production Lua 5.1, real font measurements, consecutive multipart replies, the last slot and a clean-source installer. The initial GitHub Windows run also passed all 86 tests; [view that run](https://github.com/0xInuarashi/wow-forever-codex/actions/runs/35528904070). [Testing](docs/testing.md).
 

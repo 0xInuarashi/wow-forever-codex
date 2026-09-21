@@ -33,6 +33,18 @@ created paths remained unknown mid-session. Reusing loaded paths through new
 font objects/families or outline changes returned cached bytes. Both fresh and
 reused larger-size controls failed, so that comparison was inconclusive.
 
+On **2026-09-21**, a controlled full client restart verified reuse of two
+previously loaded diagnostic font filenames. The same-session reread retained
+old data; the new client decoded the replacement. A second used filename also
+decoded fresh data published after startup, before its first read. Both kept
+their original paths and font family names. The probe checked 64-byte packets
+and checksums; both diagnostic originals were restored after observation.
+
+Three separate local FreeType readers also decoded exact new 512-byte production
+packets from one reused filename/family. Those local checks and the live probe
+do not establish automatic counter reset or full-bank recycling, and do not
+change the suite's test count. [Procedure and limits](font-recycling.md).
+
 The 65,535-name upgrade was checked on disk, including preservation of all 1,024
 existing font files and independently decoding representative new baseline
 fonts through slot 65,535. Full-bank startup performance and live delivery at

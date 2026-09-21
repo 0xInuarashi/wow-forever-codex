@@ -46,6 +46,20 @@ new filenames available to the UI. If that client session does not discover the
 new names, fully restart WoW. The title becomes `Codex | Live text 0.4.7`.
 No per-message reload is added. The saved next-slot counter is not reset.
 
+## Reuse after a full restart
+
+On 2026-09-21, two previously loaded diagnostic font filenames delivered new
+bytes after a full restart of Forever 1.60.1.69913. One replacement was written
+before restart; the other was written after the new client started, before its
+first use of that filename. The same-session control still returned cached data.
+
+This establishes reuse of those diagnostic paths across client processes.
+Automatic recycling and counter reset are not implemented: restarting today
+continues from the saved position. The live test used 64-byte probe packets and
+did not reset the 65,535-slot production bank. [Full experiment](font-recycling.md).
+
+## Startup scope
+
 The running addon requests one slot at a time; Lua does not create 65,535 frames
 or load every font into memory at startup. The game still has to discover the
 directory entries. Startup cost and live discovery at this scale are unverified
@@ -62,7 +76,9 @@ The local upgrade verified every filename and SHA-256 preservation of all 1,024 
 The earlier live matrix decoded externally updated shared valid placeholders
 twice. That demonstrates the storage mechanism on this client build, but does
 not establish startup performance or successful use of all 65,535 names. The
-larger bank is finite. Previously loaded fonts stay cached; automatic recycling
-and dynamic discovery of newly created filenames remain unproven. Reply packet
+larger bank is finite in the current implementation. Loaded fonts returned
+cached data within the running client; diagnostic reuse after full restart is
+now verified. Automatic full-bank recycling and dynamic discovery of newly
+created filenames remain unproven. Reply packet
 size, polling cadence, per-frame measurement bounds and the 20-minute watch are
 unchanged. No synthetic game input, process memory access or injection is used.
