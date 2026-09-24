@@ -109,12 +109,16 @@ class App:
             preferences=json.loads((args.state/'launcher.json').read_text(encoding='utf-8'))
         except (OSError,ValueError):
             preferences={}
-        self.notify_enabled=tk.BooleanVar(value=preferences.get('notifications',True))
+        self.notify_enabled=tk.BooleanVar(value=preferences.get('notifications',False))
         notification_controls=tk.Frame(root)
         notification_controls.pack(anchor='w',padx=12,pady=4)
-        tk.Checkbutton(notification_controls,text='Reply banner and sound',variable=self.notify_enabled,
-                       command=self.save_notification_preference).pack(side='left')
-        tk.Button(notification_controls,text='Test notification',command=lambda:self.notify('done','Test notification — reply alerts are ready.')).pack(side='left',padx=8)
+        self.notification_toggle=tk.Checkbutton(notification_controls,text='Desktop notifications (banner and sound)',
+                                                variable=self.notify_enabled,command=self.save_notification_preference)
+        self.notification_toggle.pack(side='left')
+        self.test_notification_button=tk.Button(notification_controls,text='Test notification',
+                                                 state='normal' if self.notify_enabled.get() else 'disabled',
+                                                 command=lambda:self.notify('done','Test notification — reply alerts are ready.'))
+        self.test_notification_button.pack(side='left',padx=8)
         tk.Label(root,text='Exact strip crop in desktop pixels: left, top, width, height').pack(anchor='w',padx=12)
         self.region=tk.StringVar(value=','.join(map(str,args.region)))
         tk.Entry(root,textvariable=self.region,width=48).pack(anchor='w',padx=12)
@@ -159,6 +163,7 @@ class App:
 
     def save_notification_preference(self):
         save_preferences(self.args.state,notifications=self.notify_enabled.get())
+        self.test_notification_button.configure(state='normal' if self.notify_enabled.get() else 'disabled')
         if not self.notify_enabled.get():
             self.banner.dismiss()
 

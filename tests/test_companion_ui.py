@@ -49,18 +49,52 @@ class CompanionUITests(unittest.TestCase):
         self.app.toggle()
 
     def test_reply_notification_fires_for_completion_and_respects_mute(self):
+        self.app.notification_toggle.invoke()
         self.app.inbox.add('test:1','hello')
         self.app.events.put(('test:1','done','A reply'))
-        with patch.object(self.app.banner,'show') as banner, patch.object(self.root,'bell') as bell:
+        with patch.object(self.app.banner,'show') as banner, patch.object(self.root,'bell') as bell, \
+             patch.object(self.app.banner,'dismiss') as dismiss:
             self.app.tick()
             banner.assert_called_once_with('done','A reply')
             bell.assert_called_once()
-            self.app.notify_enabled.set(False)
-            self.app.save_notification_preference()
+            self.app.notification_toggle.invoke()
+            dismiss.assert_called_once()
+            self.assertEqual(self.app.test_notification_button['state'],'disabled')
             self.app.events.put(('test:1','failed','A failure'))
             self.app.tick()
             self.assertEqual(banner.call_count,1)
+            bell.assert_called_once()
             self.assertFalse(json.loads((self.state/'launcher.json').read_text())['notifications'])
+
+    def test_notifications_default_off_while_replies_still_arrive(self):
+        self.assertFalse(self.app.notify_enabled.get())
+        self.assertEqual(self.app.test_notification_button['state'],'disabled')
+        with patch.object(self.app.banner,'show') as banner, patch.object(self.root,'bell') as bell:
+            for state in ('done','failed'):
+                key='test:'+state
+                self.app.inbox.add(key,'hello')
+                self.app.events.put((key,state,'A result'))
+                self.app.tick()
+                self.assertEqual(self.app.inbox.db.execute(
+                    'SELECT state,reply FROM jobs WHERE id=?',(key,)).fetchone(),(state,'A result'))
+                self.assertIn('A result',self.app.log.get('1.0','end'))
+            banner.assert_not_called()
+            bell.assert_not_called()
+
+    def test_notification_choice_survives_restart_and_preserves_preferences(self):
+        settings={'project':str(self.project),'start_capture':True,'custom':'keep'}
+        (self.state/'launcher.json').write_text(json.dumps(settings))
+        for enabled in (True,False):
+            self.app.notification_toggle.invoke()
+            self.assertEqual(self.app.notify_enabled.get(),enabled)
+            self.assertEqual(json.loads((self.state/'launcher.json').read_text()),
+                             dict(settings,notifications=enabled))
+            args=self.app.args
+            self.app.close()
+            self.root=tk.Tk(); self.root.withdraw()
+            self.app=App(self.root,args)
+            self.assertEqual(self.app.notify_enabled.get(),enabled)
+            self.assertEqual(self.app.test_notification_button['state'],'normal' if enabled else 'disabled')
 
     def test_banner_can_open_reply_and_dismiss(self):
         self.app.banner.show('done','Completed work. '*30)

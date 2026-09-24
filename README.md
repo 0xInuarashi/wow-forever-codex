@@ -198,6 +198,8 @@ To test without calling an agent, replace `--backend codex` with `--backend mock
 
 `Launch Companion.pyw` is an optional Windows launcher that remembers your work folder and discovers the CLI. For an initial installation, the command above also supplies the addon path explicitly.
 
+**Desktop notifications are off by default.** Enable **Desktop notifications (banner and sound)** in the companion to receive desktop reply alerts. The choice is saved across restarts; an existing saved choice is respected. Turning it off dismisses any current banner and mutes desktop completion/error alerts. In-game replies and the addon's completion badge continue normally.
+
 ## In-game controls
 
 | Action | Control |
@@ -220,7 +222,7 @@ The preview limit is 60,000 UTF-8 bytes. The companion retains the full response
 
 The native channel has delivered real responses and completion notifications in the tested client. Shared placeholders delivered fresh bytes in two live experiments, and diagnostic font filenames were successfully reused after a full client restart. Full-bank recycling, startup performance and live use of slot 65,535 remain unverified. Native item-link mouse behavior and the split-stack fix still need broader live verification.
 
-**86 local tests pass**, including production Lua 5.1, real font measurements, consecutive multipart replies, the last slot and a clean-source installer. The initial GitHub Windows run also passed all 86 tests; [view that run](https://github.com/0xInuarashi/wow-forever-codex/actions/runs/35528904070). [Testing](docs/testing.md).
+**88 local tests pass**, including production Lua 5.1, real font measurements, consecutive multipart replies, the last slot, a clean-source installer and saved notification choices. The initial GitHub Windows run passed the original 86 tests; [view that run](https://github.com/0xInuarashi/wow-forever-codex/actions/runs/35528904070). [Testing](docs/testing.md).
 
 ## Local data
 
